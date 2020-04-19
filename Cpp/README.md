@@ -503,8 +503,7 @@ int main()
 
 其它例子如下:
 ``` c++
-struct A 
-{
+struct A {
     A();
     A(const A&);
 };
@@ -558,3 +557,23 @@ C++17 强制要求了返回纯右值时的 copy elision.
 ```
 
 ## 三/五法则
+通常需要用户自定义析构函数的类也需要自定义拷贝和赋值操作.
+``` c++
+class HasPtr {
+public:
+    HasPtr(const std::string& s = std::string()): ps(new std::string(s)), i(0) {}
+    ~HasPtr() {delete ps;}
+private:
+    int i = 0;
+    std::string* ps = nullptr;
+}
+
+int main()
+{
+    {
+        HasPtr obj1("apple");
+        HasPtr obj2 = obj1; // obj1 和 obj2 中的 ps 指向同一块内存
+    }
+    // 报错, 对同一块内存释放两次
+}
+```
