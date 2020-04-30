@@ -591,3 +591,38 @@ int main()
 <center><img src="./images/copy_control.png" width=90% /></center>
 
 ## 交换操作
+同样以类值 `HasPtr` 两对象 `obj1` 和 `obj2` 之间的交换为例, 当使用标准库中的函数 `std::swap` 时, 实际上做了下面三步:
+``` c++
+HasPtr temp = obj1; // obj1 中的 string 被拷贝
+obj1 = obj2;    // obj2 中的 string 被拷贝
+obj2 = temp;    // obj1 中的string 再次被拷贝
+```
+过程示意如下:
+<center><img src="./images/default_swap.png" width=75% /></center>
+
+我们关注的效果是交换两个对象中的指针, 而标准库函数反复调用拷贝构造函数和拷贝赋值函数, 带来很多不必要的内存分配. 所以我们可以编写自己的 `swap` 函数, 更加高效地完成交换操作.
+
+``` c++
+class HasPtr {
+    friend void swap(HasPtr& lhs, HasPtr& rhs);
+    // 其它成员
+};
+
+inline
+void swap (HasPtr& lhs, HasPtr& rhs)
+{
+    using std::swap; // 注意此处
+    swap(lhs.ps, rhs.ps);
+    swap(lhs.i, rhs.i);
+
+    /* 这样写是错误的 
+    std::swap(lhs.ps, rhs.ps); */
+
+    // 当然 不使用 std::swap 也是可以的
+    // std::string& temp = lhs.ps;
+    // lhs.ps = rhs.ps;
+    // rhs.ps = temp;
+    // i 的交换同理
+}
+```
+上面函数定义中, 使用 `using std::swap`, 后面每个 `swap` 调用都应该未加限定, 也就是不应该使用 `std::swap`. 此时, 如果存在特定类型的 `swap` 版本, 就会优先调用这个版本; 若不存在, 则会调用 `std` 中的版本.
