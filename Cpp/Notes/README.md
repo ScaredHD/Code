@@ -590,6 +590,18 @@ int main()
 以 HasPtr 类为例, 对于 `HasPtr obj2 = obj1;`, 就有如下两种行为:
 <center><img src="./images/copy_control.png" width=90% /></center>
 
+编写拷贝赋值运算符时, 要确保**自赋值**时能正常工作. 一个好的模式是先讲右侧运算对象拷贝到局部临时对象中, 然后销毁左侧对象, 最后将数据从临时对象拷贝到左侧对象. 看下面的错误例子:
+``` c++
+HasPtr& HasPtr::operator=(const HasPtr& rhs)
+{
+    delete ps;  // 释放对象指向的 string
+    // 如果 rhs 和 *this 是同一个对象, 我们就将从以释放的内存中拷贝数据 (未定义行为)
+    ps = new string(*(rhs.ps));
+    i = rhs.i;
+    return *this;
+}
+```
+
 ## 交换操作
 同样以类值 `HasPtr` 两对象 `obj1` 和 `obj2` 之间的交换为例, 当使用标准库中的函数 `std::swap` 时, 实际上做了下面三步:
 ``` c++
@@ -625,4 +637,16 @@ void swap (HasPtr& lhs, HasPtr& rhs)
     // i 的交换同理
 }
 ```
-上面函数定义中, 使用 `using std::swap`, 后面每个 `swap` 调用都应该未加限定, 也就是不应该使用 `std::swap`. 此时, 如果存在特定类型的 `swap` 版本, 就会优先调用这个版本; 若不存在, 则会调用 `std` 中的版本.
+上面函数定义中, 不应该使用 `std::swap`, 而应使用 `using std::swap`, 且后面每个 `swap` 调用都应该未加限定, 也就是直接 `swap`. 此时, 如果存在特定类型的 `swap` 版本, 就会优先调用这个版本; 若不存在, 则会调用 `std` 中的版本.
+
+`swap` 可以应用在赋值运算符中. 使用**拷贝并交换 (copy and swap)** 的技术, 可以自动处理自赋值的情况且天然异常安全.
+``` c++
+HasPtr& HasPtr::operator=(HasPtr rhs) // 注意: 按值传递, 使用右侧对象的副本
+{
+    // 交换左侧运算对象和局部变量 rhs 的内容
+    swap(*this, rhs);
+    return *this;
+}
+```
+
+
