@@ -327,6 +327,7 @@ int& f()
 }
 ```
 
+
 # 泛型算法
 ## 算法形参模式
 > (10.5.2 p.367) 在任何其他算法分类之上, 还有一组参数规范. 理解这些参数规范对学习新算法很有帮助——通过理解参数的含义, 你可以将注意力集中在算法所作的操作上.
@@ -683,3 +684,57 @@ int&& r = std::move(i); // ok
 <center><img src="./image/../images/copy_move.png" width=80% /></center>
 
 如上面的示意图, 若 `obj1` 为右值, 即将被销毁, 为何不直接让 `obj2` 接管 `obj1` 的资源呢? 这样就无须进行额外的拷贝. 从效果上看, 同样是将资源从 `obj1` 移动到了 `obj2`.
+
+# 运算符重载与类型转换
+对于一个运算符函数, 它或是类的成员, 或者至少含有一个类类型的参数
+``` c++
+// 错误: 不能为 int 重载内置的运算符
+int operator+(int, int);
+```
+
+## 两种方式
+重载运算符可以作为成员函数或非成员函数, 当一个重载的运算符为成员函数时, `this` 绑定到左侧运算对象上. 成员函数的显式参数比运算对象的数量少一个.
+``` c++
+data1 + data2;  // 普通的表达式
+operator+(data1, data2);    // 等价的函数调用
+
+data1 += data2; // 基于"调用"的表达式
+data1.operator+=(data2);    // 对成员运算符的等价调用
+// this 绑定到 data1 上
+```
+(14.1 p.493) 下面的准则有助于我们在将运算符定义为成员函数还是普通的非成员函数做出抉择:
+- 赋值 `=`, 下标 `[]`, 调用 `()` 和成员访问 `->` 运算符必须时成员
+- 复合赋值运算符 (如 `+=`) 一般应该是成员, 但并非必须
+- 改变对象状态的运算符或者与给定类型密切相关的运算符, 如递增 `++`, 递减 `--`, 解引用 `*`, 通常应该是成员
+- 具有对称性的运算符可能转换任意一端的运算对象, 例如算术, 相等性 `==`, 关系和位运算符等, 应该是普通的非成员函数 
+
+# 类的继承
+## 继承模式
+``` c++
+class Base {
+public:
+	int x; // access: Base, outside
+protected:
+	int y; // access: Base
+private:
+	int z; // access: Base
+};
+
+class A: public Base {
+	// x - public
+	// y - protected
+	// z - hidden
+};
+
+class B: protected Base {
+	// x - protected
+	// y - protected
+	// z - hidden
+};
+
+class C: private Base {
+	// x - private
+	// y - private
+	// z - hidden
+};
+```
