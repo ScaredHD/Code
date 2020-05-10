@@ -19,7 +19,7 @@ public:
     void add(Mono* p);
     void remove(size_t exp);    // remove monomial(term) of which exponent == exp
     void remove(Mono* p);
-    //void rearr();   // rearrange the order of monomial, from higher degree to lower
+    void rearr();   // rearrange the order of monomial, from higher degree to lower
     friend std::ostream& operator<<(std::ostream& os, Poly p);
 
     Mono* head = new Mono();    // head ptr
@@ -28,9 +28,9 @@ private:
     Mono* tail = head;  // tail ptr
 };
 
-void rearr()
+void Poly::rearr()
 {
-    // do nothing
+    cout << "calling rearr()" << endl;
 }
 
 inline
@@ -40,7 +40,7 @@ void Poly::add(double coeff_, size_t exp_)
     tail->exp = exp_;
     tail->next = new Mono();
     tail = tail->next;
-    //rearr();
+    rearr();
 }
 
 inline
@@ -50,7 +50,7 @@ void Poly::add(Mono* p)
     tail->exp = p->exp;
     tail->next = new Mono();
     tail = tail->next;
-    //rearr();
+    rearr();
 }
 
 inline
