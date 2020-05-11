@@ -765,3 +765,19 @@ p = &bulk;  // p 指向 bulk 中的 Quote 部分
 Quote& r = bulk; // r 绑定到 bulk 的 Quote 部分
 ```
 
+## 静态类型和动态类型
+一个变量或表达式的静态类型 (static type) 和动态类型 (dynamic type) 是不同的. **静态类型在编译时就已知, 而动态类型只有在运行时才可知.**
+``` c++
+double f(Quote& obj)
+{
+    return obj.func();
+}
+
+double ret = item.f(obj1);  // item 的类型运行时决定
+```
+
+函数既接受基类 `Quote` 对象, 也接受派生类 `Bulk_quote` 对象, 所以 `f()` 函数内 `obj` 调用基类还是派生类的 `func()` 成员就是不确定的. 定义时, 我们将形参 `obj` 定义为 `Quote&` 类型, 这是静态类型. 运行时, 传入 `Quote` 类对象, 则调用 `Quote` 的 `func()`; 传入 `Bulk_quote` 对象, 则调用这个类的对应函数. 此时的 `obj` 就是动态类型的. 
+
+> **基类的指针或引用的静态类型和动态类型可能不一致.**
+> 如果表达式既不是引用也不是指针, 则其动态类型永远和静态类型一致.
+
