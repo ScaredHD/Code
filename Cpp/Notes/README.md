@@ -817,3 +817,47 @@ obj2.func();    // 静态绑定, 编译时就确定调用 Quote 中的 func()
 - **基类的指针或引用的静态类型和动态类型可能不一致.**
 - **如果表达式既不是引用也不是指针, 则其动态类型永远和静态类型一致.**
 
+
+# 模板与泛型编程
+## 函数模板
+模板由关键字 `template` 加不为空的**模板参数列表 (template parameter list)** 构成. 模板参数列表中, 一个或多个**模板参数 (template parameter)**由逗号分隔.
+``` c++
+template <typename T>   // 模板定义
+/* 使用类型 T */
+```
+模板参数列表的作用很像函数参数列表. 模板参数表示在类或函数定义中用到的类型或值. 使用模板时, 我们隐式或显式指定**模板实参 (template argument)**, 将其绑定到模板上.
+
+`typename` (或等价的 `class`) 后面的参数称为**类型参数 (type parameter)**. 此参数可以当作一种类型使用, 就像其它内置类型一样.
+
+当调用函数模板时, 编译器会用推断出的模板参数为我们**实例化 (instantize)** 一个特定版本的函数.
+``` c++
+template <typename T>
+T add(const T lhs, const T rhs) // 加法函数模板
+{
+    return lhs + rhs;
+}
+
+int main()
+{
+    cout << add(1, 0); // 实例化出 int add(const int, const int)
+    cout << add(3.14, 2.718);   // 实例化出 double add(const double, double)
+}
+```
+### 非类型参数
+一个非类型参数 (nontype parameter) 表示一个值, 而非一个类型. 使用特定的类型名来指定非类型参数.
+``` c++
+template <typename T1, class T2, unsigned U, int I>
+// T1, T2 为类型参数, U 和 I 为非类型参数
+```
+当一个模板被实例化时, 非类型参数被一个用户提供的或编译器推断出的值代替.
+``` c++
+template <unsigned N, unsigned M>
+int compare(const char(&p1)[N], const char(&p2)[M])
+{
+    return strcmp(p1, p2);
+}
+```
+上面的代码, 当调用 `compare("hi", "hola")`, 编译器就会使用字面常量的大小来代替 `N` 和 `M`, 从而实例化模板, 得到 `int compare(const char(&p1)[3], const char(&p2)[5])`.
+
+
+
