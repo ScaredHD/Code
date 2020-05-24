@@ -85,6 +85,10 @@ int dist = e - b; // 差值 (距离) 为 5
 ```
 上面的例子里, `b` 和 `e` 的类型都是 `vector<int>::iterator`. 如果容器是常量, 则迭代器不能修改容器的内容, 只能使用 `const_iterator`.
 
+> 迭代器和 `const` 的关系就像指针和 `const` 的关系一样:
+> `std::vector<T>::const_iterator` 就像 `const T*`, 即底层 const, 迭代器指向的值不能改变
+> `const std::vector<T>::iterator` 就像 `T* const`, 即顶层 const, 迭代器本身不能改变 
+
 迭代器不是指针, 但行为却和指针类似, 支持对应的运算符.
 ``` c++
 vector<int>::iterator it;
