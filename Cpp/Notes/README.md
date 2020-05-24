@@ -397,13 +397,23 @@ int& f()
 - 关联容器:
   - 有序 (按关键字): `map`, `set`, `multimap`, `multiset`
   - 无序: `unordered_map`, `unordered_set`, `unordered_multimap`, `unordered_multiset`
+### 迭代器范围
+两个迭代器表示的范围约定为**左闭右开区间**. 设迭代器 `e` 在 `b` 后面, 则 `b` 和 `e` 表示的范围为 `[b, e)`: 即从 `b` 开始到 `e` 前一个元素构成. **当 `b` 等于 `e` 时 (指向同一元素), 则这两个迭代器构成的范围为空.**
+<center><img src="./images/left-inclusive.png" width=30% /></center>
+
 ## 顺序容器
 ### 容器操作
 #### 添加
+
+> 由于是容器的范围是左闭右开区间, 约定插入操作将元素(或范围)插入到指定位置前面有两个好处: 1. 容器的开始位置可以插入元素; 2. 若插入位置的迭代器为尾后迭代器, 这样插入不会出错
 #### 删除
 #### 返回值
 添加和删除操作的返回值可以这样理解:
+- 在 `it` 位置前插入元素或范围 (蓝色), 插入位置后面的元素 (橙色) 依次向后移动, 原来的插入位置就是插入后的返回值:
+<center><img src="./images/insert.png" width=80% /></center>
 
+- 删除 `it` 位置或 `[b, e)` 范围的元素 (红色), 删除位置后面的元素 (橙色) 依次向前移动, 原来删除范围的首元素位置现在变成了删除范围后的第一个元素, 即返回值:
+<center><img src="./images/erase.png" width=80% /></center>
 ## 迭代器失效 
 从数据结构的角度, 容易理解迭代器的失效.
 ### 插入操作
@@ -471,7 +481,7 @@ std::shared_ptr<int> p4(p1.get());  // original object, but independent
 ```
 最终, 4 个指针的计数器分别为: 2, 2, 1, 1. 其中, `p1`, `p2`, `p4` 指向同一对象, 但 `p4` 是独立的智能指针; `p3` 指向另一个对象.
 
-<center><img src="./pic/dynamic_memory.png" width=35% /></center>
+<center><img src="./images/dynamic_memory.png" width=30% /></center>
 
 # 拷贝控制
 一个类通过五种特殊的成员函数控制其拷贝行为: 
