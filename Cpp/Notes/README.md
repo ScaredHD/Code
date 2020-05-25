@@ -292,13 +292,6 @@ char * const *(*fp)() // 这个指针指向的常量指针指向 char
 - 大多数时候, 求值顺序都未规定: 如 `f1() + f2()` 中, 先求 `f1()` 还是 `f2()` 是不确定的 
 
 - 常用运算符优先级及结合律列出如下:
-<style type="text/css">
-.tg  {border-collapse:collapse;border-spacing:0;}
-.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
-.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
-.tg .tg-z5o4{font-family:Monaco, monospace !important;;text-align:center;vertical-align:middle}
-.tg .tg-m2jw{font-family:Monaco, monospace !important;;text-align:center;vertical-align:top}
-</style>
 <table class="tg">
   <tr>
     <th class="tg-z5o4">结合律</th>
@@ -404,15 +397,6 @@ int& f()
 ## 4.19. 顺序容器
 ### 4.19.8. 容器操作
 #### 4.19.8.1. 添加
-<style type="text/css">
-.tg  {border-collapse:collapse;border-spacing:0;}
-.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
-  overflow:hidden;padding:10px 5px;word-break:normal;}
-.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
-  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
-.tg .tg-nrix{text-align:center;vertical-align:middle}
-.tg .tg-z5o4{font-family:"Lucida Console", Monaco, monospace !important;;text-align:center;vertical-align:middle}
-</style>
 <table class="tg">
 <thead>
   <tr>
@@ -440,14 +424,6 @@ int& f()
 
 > 由于是容器的范围是左闭右开区间, 约定插入操作将元素(或范围)插入到指定位置前面有两个好处: 1. 容器的开始位置可以插入元素; 2. 若插入位置的迭代器为尾后迭代器, 这样插入不会出错
 #### 4.19.8.2. 删除
-<style type="text/css">
-.tg  {border-collapse:collapse;border-spacing:0;}
-.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
-  overflow:hidden;padding:10px 5px;word-break:normal;}
-.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
-  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
-.tg .tg-nrix{text-align:center;vertical-align:middle}
-</style>
 <table class="tg">
 <thead>
   <tr>
@@ -480,15 +456,6 @@ int& f()
 ## 4.20. 迭代器失效 
 从数据结构的角度, 容易理解迭代器的失效. **如果操作后, 原来的元素在内存中的位置没有发生变化, 则迭代器 (以及指针和引用) 仍然有效.**
 ### 4.20.9. 插入操作
-<style type="text/css">
-.tg  {border-collapse:collapse;border-spacing:0;}
-.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
-  overflow:hidden;padding:10px 5px;word-break:normal;}
-.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
-  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
-.tg .tg-9wq8{border-color:inherit;text-align:center;vertical-align:middle}
-.tg .tg-nrix{text-align:center;vertical-align:middle}
-</style>
 <table class="tg">
 <thead>
   <tr>
@@ -526,15 +493,6 @@ int& f()
 <center><img src="./images/invalidation2.png" width=50% /></center>
 
 ### 4.20.10. 删除操作
-<style type="text/css">
-.tg  {border-collapse:collapse;border-spacing:0;}
-.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
-  overflow:hidden;padding:10px 5px;word-break:normal;}
-.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
-  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
-.tg .tg-9wq8{border-color:inherit;text-align:center;vertical-align:middle}
-.tg .tg-nrix{text-align:center;vertical-align:middle}
-</style>
 <table class="tg">
 <thead>
   <tr>
@@ -669,12 +627,6 @@ A obj3 = obj1;  // 拷贝初始化, 调用拷贝构造函数
 
 ## 7.25. `explicit` 关键字
 `explicit` 用于类内声明构造函数, 类外定义不应重复. 
-<style type="text/css">
-.tg  {border-collapse:collapse;border-spacing:0;}
-.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
-.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
-.tg .tg-cly1{text-align:left;vertical-align:middle}
-</style>
 <table class="tg">
   <tr>
     <th class="tg-cly1" colspan="3"><code>explicit</code>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(1)</th>
