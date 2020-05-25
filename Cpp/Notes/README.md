@@ -404,20 +404,173 @@ int& f()
 ## 4.19. 顺序容器
 ### 4.19.8. 容器操作
 #### 4.19.8.1. 添加
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg .tg-nrix{text-align:center;vertical-align:middle}
+.tg .tg-z5o4{font-family:"Lucida Console", Monaco, monospace !important;;text-align:center;vertical-align:middle}
+</style>
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-nrix">操作</th>
+    <th class="tg-nrix">行为</th>
+    <th class="tg-nrix">返回值</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-z5o4">insert(p, t)</td>
+    <td class="tg-nrix">在 p 前面添加值为 t 的元素</td>
+    <td class="tg-nrix" rowspan="3">返回插入的第一个元素,<br>若插入元素为空, 返回插入位置 p</td>
+  </tr>
+  <tr>
+    <td class="tg-z5o4">insert(p, b, e)</td>
+    <td class="tg-nrix">将 b 和 e 指定范围的元素添加到 p 前</td>
+  </tr>
+  <tr>
+    <td class="tg-z5o4">insert(p, il)</td>
+    <td class="tg-nrix">将花括号包围的列表 il 插入到 p 前</td>
+  </tr>
+</tbody>
+</table>
 
 > 由于是容器的范围是左闭右开区间, 约定插入操作将元素(或范围)插入到指定位置前面有两个好处: 1. 容器的开始位置可以插入元素; 2. 若插入位置的迭代器为尾后迭代器, 这样插入不会出错
 #### 4.19.8.2. 删除
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg .tg-nrix{text-align:center;vertical-align:middle}
+</style>
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-nrix">操作</th>
+    <th class="tg-nrix">行为</th>
+    <th class="tg-nrix">返回值</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-z5o4">erase(p)</td>
+    <td class="tg-nrix">删除 p 位置的元素</td>
+    <td class="tg-nrix" rowspan="2">返回删除范围后面的第一个元素,<br>如果被删除的最后一个元素迭代器 (p 或 e) <br>为尾后迭代器, 则返回尾后迭代器</td>
+  </tr>
+  <tr>
+    <td class="tg-z5o4">erase(b, e)</td>
+    <td class="tg-nrix">删除 b 和 e 指定范围内的元素</td>
+  </tr>
+</tbody>
+</table>
+
 #### 4.19.8.3. 返回值
-添加和删除操作的返回值可以这样理解:
+添加和删除操作的返回值可以这样理解, 以 vector 为例:
 - 在 `it` 位置前插入元素或范围 (蓝色), 插入位置后面的元素 (橙色) 依次向后移动, 原来的插入位置就是插入后的返回值:
 <center><img src="./images/insert.png" width=80% /></center>
 
 - 删除 `it` 位置或 `[b, e)` 范围的元素 (红色), 删除位置后面的元素 (橙色) 依次向前移动, 原来删除范围的首元素位置现在变成了删除范围后的第一个元素, 即返回值:
 <center><img src="./images/erase.png" width=80% /></center>
+
 ## 4.20. 迭代器失效 
-从数据结构的角度, 容易理解迭代器的失效.
+从数据结构的角度, 容易理解迭代器的失效. **如果操作后, 原来的元素在内存中的位置没有发生变化, 则迭代器 (以及指针和引用) 仍然有效.**
 ### 4.20.9. 插入操作
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg .tg-9wq8{border-color:inherit;text-align:center;vertical-align:middle}
+.tg .tg-nrix{text-align:center;vertical-align:middle}
+</style>
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-9wq8" colspan="3">插入操作</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-9wq8">容器</td>
+    <td class="tg-9wq8">迭代器失效</td>
+    <td class="tg-nrix">指针,引用失效</td>
+  </tr>
+  <tr>
+    <td class="tg-9wq8">vector<br>string</td>
+    <td class="tg-9wq8">插入位置及后面的迭代器失效(未重新分配空间)<br>全部失效(重新分配空间)</td>
+    <td class="tg-nrix">插入位置及后面的迭代器失效(未重新分配空间)<br><span style="font-weight:400;font-style:normal">全部失效(重新分配空间)</span><br></td>
+  </tr>
+  <tr>
+    <td class="tg-9wq8">deque</td>
+    <td class="tg-9wq8">全部失效</td>
+    <td class="tg-nrix">有效(插入到首尾)<br>全部失效(首位位置之外的任何位置)</td>
+  </tr>
+  <tr>
+    <td class="tg-nrix">list<br>forward_list</td>
+    <td class="tg-nrix">有效</td>
+    <td class="tg-nrix">有效</td>
+  </tr>
+</tbody>
+</table>
+
+- 对于 `vector` 和 `string`: 其在内存中的存储方式为顺序存储, 这表明: 如果插入不会引起存储空间重新分配, 原来插入位置后的所有元素都会依次向后移动, 这会导致原来迭代器所指元素发生变化, 所以 C++ 标准规定, 插入位置后的迭代器失效. 如果插入后 `size > capacity`, 则会在内存中将所有元素移动到更大的空间中, 导致所有迭代器失效. 
+<center><img src="./images/invalidation1.png" width=80% /></center>
+
+- 对于 `list` 和 `forward_list`: 其在内存中的存储方式为离散存储, 因此所有迭代器, 指针和引用仍然有效就是容易理解的, 因为原来的元素在内存中没有移动.
+<center><img src="./images/invalidation2.png" width=50% /></center>
+
 ### 4.20.10. 删除操作
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg .tg-9wq8{border-color:inherit;text-align:center;vertical-align:middle}
+.tg .tg-nrix{text-align:center;vertical-align:middle}
+</style>
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-9wq8" colspan="3">删除操作</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-9wq8">容器</td>
+    <td class="tg-9wq8">迭代器失效</td>
+    <td class="tg-nrix">指针,引用失效</td>
+  </tr>
+  <tr>
+    <td class="tg-9wq8">vector<br>string</td>
+    <td class="tg-9wq8">删除位置及后面的迭代器失效<br></td>
+    <td class="tg-nrix"><span style="font-weight:400;font-style:normal">删除位置及后面的元素失效</span><br></td>
+  </tr>
+  <tr>
+    <td class="tg-9wq8">deque</td>
+    <td class="tg-9wq8">全部失效(删除首位之外的元素)<br>被删除元素迭代器失效(删除首/尾元素)<br></td>
+    <td class="tg-nrix">全部失效(删除首位之外的元素)<br>被删除元素失效(删除首/尾元素)</td>
+  </tr>
+  <tr>
+    <td class="tg-nrix">list<br>forward_list</td>
+    <td class="tg-nrix">有效</td>
+    <td class="tg-nrix">有效</td>
+  </tr>
+</tbody>
+</table>
+
+- 对于 `vector` 和 `string`: 被删除的元素已经被销毁了, 所以其迭代器, 指针和引用也失效了; 删除后, 删除位置后面的元素会依次向前移动, 导致这些迭代器 (包括尾后迭代器), 指针和引用失效; 只有删除位置前的元素没有变化, 迭代器, 指针和引用没有失效.
+<center><img src="./images/invalidation3.png" width=25% /></center>
+
+- 对于 `list` 和 `forward_list`: 同理, 不会失效
+<center><img src="./images/invalidation4.png" width=50% /></center>
+
 ### 4.20.11. 使用建议
 **利用插入和删除操作的返回值, 在每次改变容器的操作后重新正确定位迭代器**, 即 `it = c.op(it);`, 如:
 ``` c++
@@ -426,6 +579,8 @@ it2 = deq.insert(it2, b, e);    // it2 现在指向插入范围中的第一个�
 it3 = lst.erase(it3);   // it3 现在指向被删除元素的后一个元素
 it4 = vec.erase(b, e);  // it4 现在指向被删除范围后的一个元素
 ```
+
+
 # 5. 泛型算法
 ## 5.21. 算法形参模式
 > (10.5.2 p.367) 在任何其他算法分类之上, 还有一组参数规范. 理解这些参数规范对学习新算法很有帮助——通过理解参数的含义, 你可以将注意力集中在算法所作的操作上.
