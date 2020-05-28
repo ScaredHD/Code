@@ -262,6 +262,8 @@ public:
 
     char& operator[](std::size_t position)  // non-cost
     {
+        // 先将调用对象转为 const, 使用 const 函数
+        // 再将返回值转为非 const
         return const_cast<char&>(static_cast<const TextBlock&>(*this)[position]);
     }
 }
