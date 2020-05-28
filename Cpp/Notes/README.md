@@ -249,6 +249,24 @@ f(&obj)
 
 > 如果可以, 就应该将成员函数定义为 `const`.
 
+### 避免代码重复
+当类中 const 和非 const 成员函数实质等价时, 可以使非 const 函数调用 const 函数, 已避免代码重复.
+``` c++
+class TextBlock {
+public:
+    const char& operator[](std::size_t position) const  // const 成员函数
+    {
+        // do many things
+        return text[position];
+    }
+
+    char& operator[](std::size_t position)  // non-cost
+    {
+        return const_cast<char&>(static_cast<const TextBlock&>(*this)[position]);
+    }
+}
+```
+
 
 ## 1.11. 复杂声明
 下面方法来自《C专家编程》, 可以推广到 C++ 中
@@ -381,8 +399,8 @@ a.membFunc(b); // 成员函数
 ``` c++
 int& f()
 {
-  int i = 42;
-  return i; // 严重错误
+    int i = 42;
+    return i; // 严重错误
 }
 ```
 # 4. 容器
