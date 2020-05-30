@@ -633,7 +633,10 @@ std::shared_ptr<int> p4(p1.get());  // original object, but independent
 
 > 当我们使用拷贝初始化 (copy initialization) 时, 我们要求编译器将**右侧运算对象拷贝到正在创建的对象中**, 如果需要的话还要进行类型转换. 拷贝初始化通常使用拷贝构造函数来完成.
 
+[Stackoverflow.com - Is there a difference between copy initialization and direct initialization?](https://stackoverflow.com/a/1051468)
+
 注意: 不要认为调用拷贝构造函数就是拷贝初始化. 直接初始化可以调用用户定义的(普通的)构造函数, 也可以"直接"调用拷贝构造函数 (因为参数匹配, 可以直接用拷贝构造函数创建对象). 所以还是符合此前的定义, 没有 `=` 就是直接初始化, 使用 `=` 就是拷贝初始化.
+
 
 ``` c++
 // A 是类类型, 内部定义有构造函数 A(int), 拷贝构造函数 A(const A&)
