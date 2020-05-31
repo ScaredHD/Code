@@ -574,6 +574,24 @@ alg(beg, end, beg2, other args);  // 接受单个目标迭代器 beg2, 何时结
 alg(beg, end, beg2, end2, other args); // beg2, end2 第二个范围, 指定目的位置
 ```
 
+## 插入迭代器
+插入迭代器用于插入元素, 有三种:
+- `inserter`: 使用 `insert` 插入
+- `back_inserter`: 使用 `push_back` 插入, **容器须支持 `push_back` 操作**
+- `front_inserter`: 使用 `push_front` 插入, **容器须支持 `push_front` 操作**
+
+### inserter
+`inserter` 和使用 `insert()` 插入不同之处在于: 插入迭代器 `inserter` **始终绑定在原来的元素上, 即始终插入到同一个元素前面**. 而 `insert()` 返回的迭代器为插入元素中的第一个, 不再是原来的元素. 插入迭代器的操作 `*it = val;` 等价于 
+``` c++
+it = c.insert(it ,val); // it 指向新加入的元素
+++it; // 递增 it 使其指向原来的元素
+```
+举例, 将 7, 8, 9 依次插入到 1, 2(插入位置 it), 3 中:
+<center><img src="./images/inserter.png" width=50% /></center>
+
+### front_inserter 和 back_inserter
+`front_inserter` 和 `insert` 不同之处在于: `front_inserter` **总是将元素插入到容器的首元素前**. 所以结果看起来和使用 `insert() ` 很类似. 举例, 将 7, 8, 9 依次插入到 1, 2, 3 的头部:
+<center><img src="./images/front_inserter.png" width=50% /></center>
 
 # 6. 动态内存与智能指针
 ## 6.22. C++ 内存分配
