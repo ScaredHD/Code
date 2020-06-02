@@ -619,15 +619,19 @@ replace_copy(v.cbegin(), v.cend(), it, 0, 42);  // 做同上替换, 将结果拷
 ```
 
 ## 中间元素的选取
-在一些算法中, 常常会用到容器/数组的中间元素, 中间元素的选取主要有两种方式:
-- `begin + (end - begin) / 2`
+在一些算法中, 常常会用到容器/数组的中间元素, 中间元素的选取主要有两种方式 (`end` 对应尾后):
+- `begin + (end - begin) / 2` 或 `begin + size / 2`
 - `(begin + end) / 2`
-  
+
 第一种方式 `begin + (end - begin) / 2` 更好. 可参考下面🔗:
 
 [Geeksforgeeks - Why start+(end–start)/2 is preferrable method for calculating middle of an array over (start+end)/2 ?](https://www.geeksforgeeks.org/start-end-start2-preferrable-method-calculating-middle-array-start-end2/)
 
-对于指针和迭代器尤其如此, 两个指针或两个迭代器之间的加法运算是没有定义的. 而减法运算则返回两个指针/迭代器位置之间的距离.
+> 对于指针和迭代器尤其如此, 两个指针或两个迭代器之间的加法运算是没有定义的. 而减法运算则返回两个指针/迭代器位置之间的距离.
+
+注意左闭右开区间的约定, 以迭代器为例, 此处 `begin + size / 2` 返回的迭代器是第一部分的尾后元素, 是第二部分的首元素.
+
+<center><img src="./images/mid.png" width=50% /></center>
 
 # 6. 动态内存与智能指针
 ## 6.22. C++ 内存分配
