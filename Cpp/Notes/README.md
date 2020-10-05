@@ -589,7 +589,7 @@ it4 = vec.erase(b, e);  // it4 现在指向被删除范围后的一个元素
 alg(beg, end, other args);  // beg, end 输入范围
 alg(beg, end, dest, other args);  // dest 目的位置
 alg(beg, end, beg2, other args);  // 接受单个目标迭代器 beg2, 何时结束由输入范围决定
-alg(beg, end, beg2, end2, other args); // beg2, end2 第二个范围, 指定目的位置
+alg(beg, end, beg2, end2, other args); // beg2, end2 第二个范围, 指定目的位置 
 ```
 - 前两个参数表示输入范围, 算法对这个范围内的元素进行操作.
 - 只接受一个参数表示目的位置的算法假定目标空间有足够空间容纳写入数据
