@@ -40,6 +40,7 @@ public:
 
     void printNode(Node<T>* p) const;
     void prePrint(Node<T>* root) const;
+    void midPrint(Node<T>* root) const;
 
     Node<T>* root = nullptr;
 private:
@@ -57,6 +58,9 @@ int main()
     cout << bt.addR(30, bt.root->left) << endl;
 
     bt.prePrint(bt.root);
+    cout << endl << endl;
+
+    bt.midPrint(bt.root);
 
     return 0;
 }
@@ -136,23 +140,37 @@ void BinTree<T>::prePrint(Node<T>* root) const
     // print root
     printNode(root);
 
-
     // print left sub-tree
     if (root->left)
     {
-        Node<T>* r = root->left;
-        prePrint(r);
+        prePrint(root->left);
     }
 
     // print right sub-tree
     if (root->right)
     {
-        Node<T>* r = root->right;
-        prePrint(r);
+        prePrint(root->right);
     }
 }
 
+template <typename T>
+void BinTree<T>::midPrint(Node<T>* root) const
+{
+    // print left sub-tree
+    if (root->left)
+    {
+        midPrint(root->left);
+    }
 
+    // print root
+    printNode(root);
+
+    // print right sub-tree
+    if (root->right)
+    {
+        midPrint(root->right);
+    }
+}
 
 
 
