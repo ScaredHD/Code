@@ -118,7 +118,7 @@ it += n; it -=n;    // it 移动 n 个位置
 > When an expression that has integral type is added to or subtracted from a pointer, the result has the type of the pointer operand. If the pointer operand points to an element of an array object, and the array is large enough, the result points to an element offset from the original element such that the difference of the subscripts of the resulting and original array elements equals the integral expression. In other words, if the expression `P` points to the i-th element of an array object, the expressions `(P)+N` (equivalently, `N+(P)`) and `(P)-N` (where `N` has the value `n`) point to, respectively, the i + n-th and i − n-th elements of the array object, provided they exist. Moreover, if the expression `P` points to the last element of an array object the expression `(P)+1` points one past the last element of the array object, and if the expression `Q` points one past the last element of an array object, the expression `(Q)-1` points to the last element of the array object. If both the pointer operand and the result point to elements of the same array object, or one past the last element of the array object, the evaluation shall not produce an overflow; otherwise, the behavior is undefined.
 > --- N3242
 
-指向尾后元素的指针是合法的 (迭代器同理), 但是注意: 解引用尾后元素指针或迭代器的行为是未定义行为.
+一个 n 元的数组, 其有效的下标为 `0`, `1`, ..., `n - 1`, 指向这些实际存在的元素的指针(迭代器)被认为是有效的, 同时指向尾后元素的指针是合法的 (上面的标准中有明确定义), 但解引用尾后元素仍然会引发未定义行为. 指向其它元素的指针(迭代器)被认为是无效的.
 
 ## 1.5. 范围 for
 ``` c++
