@@ -77,6 +77,7 @@ vector<int> v2{10, 5}; // v2 含 2 个元素, 依次为 10, 5
 ```
 
 ## 1.4. 迭代器与指针
+> **永远不要解引用尾后迭代器, 更不要使用解引用尾后迭代器得到的值.**
 
 迭代器使程序员能够遍历整个容器. 类似于指针, 迭代器提供对对象的间接访问. 使用 `begin()` 可以返回指向容器首元素的迭代器; `end()` 返回指向容器尾元素下一位置 (**尾后, off the end**) 元素的迭代器, 常称**尾后迭代器** (**off-the-end iterator**). 
 
@@ -110,15 +111,7 @@ it += n; it -=n;    // it 移动 n 个位置
 `it + n` 等价于 `next(it, n)`
 `it - n` 等价于 `prev(it, n)`
 
-下面探讨指针与迭代器的合法性.
-> **永远不要解引用尾后迭代器, 更不要使用解引用尾后迭代器得到的值.**
 
-对于内置的下标运算符 `[]`, 表达式 `E1[E2]` 和 `*((E1) + (E2))` 完全等同. 所以要分析这个 `arr[i]` 表达式的合法性, 需要了解指针运算.
-
-> When an expression that has integral type is added to or subtracted from a pointer, the result has the type of the pointer operand. If the pointer operand points to an element of an array object, and the array is large enough, the result points to an element offset from the original element such that the difference of the subscripts of the resulting and original array elements equals the integral expression. In other words, if the expression `P` points to the i-th element of an array object, the expressions `(P)+N` (equivalently, `N+(P)`) and `(P)-N` (where `N` has the value `n`) point to, respectively, the i + n-th and i − n-th elements of the array object, provided they exist. Moreover, if the expression `P` points to the last element of an array object the expression `(P)+1` points one past the last element of the array object, and if the expression `Q` points one past the last element of an array object, the expression `(Q)-1` points to the last element of the array object. If both the pointer operand and the result point to elements of the same array object, or one past the last element of the array object, the evaluation shall not produce an overflow; otherwise, the behavior is undefined.
-> --- N3242
-
-一个 n 元的数组, 其有效的下标为 `0`, `1`, ..., `n - 1`, 指向这些实际存在的元素的指针(迭代器)被认为是有效的, 同时指向尾后元素的指针是合法的 (上面的标准中有明确定义), 但解引用尾后元素仍然会引发未定义行为. 指向其它元素的指针(迭代器)被认为是无效的.
 
 ## 1.5. 范围 for
 ``` c++
@@ -394,6 +387,13 @@ auto end = v.end();
 int i = beg[3];  // 等价于 int i = *(beg + 3);
 int j = end[-2];  // 将 v 倒数第二个元素赋给 j
 ```
+
+指针(迭代器)与下标表达式:
+对于内置的下标运算符 `[]`, 表达式 `E1[E2]` 和 `*((E1) + (E2))` 完全等同. C++11 标准对于指针和整数的运算有如下规定:
+> When an expression that has integral type is added to or subtracted from a pointer, the result has the type of the pointer operand. If the pointer operand points to an element of an array object, and the array is large enough, the result points to an element offset from the original element such that the difference of the subscripts of the resulting and original array elements equals the integral expression. In other words, if the expression `P` points to the i-th element of an array object, the expressions `(P)+N` (equivalently, `N+(P)`) and `(P)-N` (where `N` has the value `n`) point to, respectively, the i + n-th and i − n-th elements of the array object, provided they exist. Moreover, if the expression `P` points to the last element of an array object the expression `(P)+1` points one past the last element of the array object, and if the expression `Q` points one past the last element of an array object, the expression `(Q)-1` points to the last element of the array object. If both the pointer operand and the result point to elements of the same array object, or one past the last element of the array object, the evaluation shall not produce an overflow; otherwise, the behavior is undefined.
+> --- N3242
+
+所以指针(迭代器)可以指向尾后元素, 但是不能解引用尾后元素指针(迭代器), 这样会引起未定义行为.
 
 ## 2.3. 变量声明
 下面方法来自《C专家编程》, 可以推广到 C++ 中
