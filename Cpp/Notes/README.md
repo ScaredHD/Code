@@ -971,7 +971,7 @@ HasPtr& HasPtr::operator=(const HasPtr& rhs)
 {
     delete ps;  // 释放对象指向的 string
     // 如果 rhs 和 *this 是同一个对象, 我们就将从以释放的内存中拷贝数据 (未定义行为)
-    ps = new string(*(rhs.ps));
+    ps = new string(*rhs.ps);
     i = rhs.i;
     return *this;
 }
