@@ -849,6 +849,7 @@ int main()
 ```
 
 ## 7.3. 复制省略与返回值优化
+[What are copy elision and return value optimization?](https://stackoverflow.com/questions/12953127/what-are-copy-elision-and-return-value-optimization/12953150#12953150)
 ``` c++
 class Point {
 public:
