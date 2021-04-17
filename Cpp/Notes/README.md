@@ -1172,24 +1172,56 @@ item = bulk;    // 调用 operator=(const Quote&)
 就算传递给基类的函数一个派生类的对象, 基类中的函数仍然只能处理基类自己的成员. 派生类中, 只有基类部分会被拷贝, 移动或赋值. 在上面的过程中, `Bulk_quote` 部分就被忽略了, 也可以说被切掉了 (sliced down). 
 
 ## 9.4. 静态类型和动态类型
-一个变量或表达式的静态类型 (static type) 和动态类型 (dynamic type) 是不同的. **静态类型在编译时就已知, 而动态类型只有在运行时才可知.** 这种特性叫作动态绑定 (dynamic binding). 当且仅当对通过指针或引用调用虚函数时, 才会产生动态绑定.
-``` c++
-double f(Quote& obj)    // 虚函数, 基类和派生类中都有
-{
-    return obj.func();
-}
-
-Quote obj1;
-double ret = item.f(obj1);  // 动态绑定, 运行时决定调用哪个版本的 func()
-Quote obj2;
-obj2.func();    // 静态绑定, 编译时就确定调用 Quote 中的 func()
-```
-
-函数既接受基类 `Quote` 对象, 也接受派生类 `Bulk_quote` 对象, 所以 `f()` 函数内 `obj` 调用基类还是派生类的 `func()` 成员就是不确定的. 定义时, 我们将形参 `obj` 定义为 `Quotke&` 类型, 这是**静态类型**. 运行时, 传入 `Quote` 类对象, 则调用 `Quote` 的 `func()`; 传入 `Bulk_quote` 对象, 则调用这个类的对应函数. 此时的 `obj` 就是**动态类型**的. 
+一个变量或表达式的静态类型 (static type) 和动态类型 (dynamic type) 是不同的. **静态类型在编译时就已知, 而动态类型只有在运行时才可知.** 这种特性叫作动态绑定 (dynamic binding). **当且仅当对通过指针或引用调用虚函数时, 才会产生动态绑定.**
 
 - **基类的指针或引用的静态类型和动态类型可能不一致.**
 - **如果表达式既不是引用也不是指针, 则其动态类型永远和静态类型一致.**
 
+下面是一个例子:
+```c++
+class B {
+public:
+    void f() { cout << "B::f()\n"; }
+    virtual void vf() { cout << "B::vf()\n"; };
+};
+
+class D : public B {
+public:
+    void f() { cout << "D::f()\n"; };
+    virtual void vf() { cout << "D::vf()\n"; };
+};
+
+int main() {
+    B b;
+    D d;
+    // static type binding
+    b.f();   // B::f()
+    b.vf();  // B::vf()
+    d.f();   // D::f()
+    d.vf();  // D::vf()
+
+    cout << "\n";
+
+    B* ptrToB = &b;
+    B& refToB = b;
+    ptrToB->f();   // B::f(), static binding
+    ptrToB->vf();  // B::vf(), dynamic binding via pointer
+    refToB.f();    // B::f(), static binding
+    refToB.vf();   // B::vf(), dynamic binding via reference
+
+    cout << "\n";
+
+    B* ptrToD = &d;
+    B& refToD = d;
+    ptrToD->f();   // B::f(), static binding
+    ptrToD->vf();  // D::vf(), dynamic binding via pointer
+    refToD.f();    // B::f(), static binding
+    refToD.vf();   // D::vf(), dynamic binding via reference
+
+    return 0;
+}
+
+```
 
 # 10. 模板与泛型编程
 ## 10.1. 函数模板
