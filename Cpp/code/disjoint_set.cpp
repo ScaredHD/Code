@@ -20,15 +20,15 @@ struct DisjointSet {
     int find(int x) { return (par[x] == x ? x : par[x] = find(par[x])); }
 
     void unite(int x, int y) {
-        int px = find(x);
-        int py = find(y);
-        if (px == py) return;
-        if (rank[px] < rank[py]) {
-            par[px] = py;
+        x = find(x);
+        y = find(y);
+        if (x == y) return;
+        if (rank[x] < rank[y]) {
+            par[x] = y;
         } else {
-            par[py] = px;
+            par[y] = x;
         }
-        if (rank[px] == rank[py]) ++rank[px];
+        if (rank[x] == rank[y]) ++rank[x];
     }
 
     bool same(int x, int y) { return find(x) == find(y); }
