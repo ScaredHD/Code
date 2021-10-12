@@ -11,54 +11,46 @@ struct DisjointSet {
     size_t len;
     vector<int> par;
     vector<int> rank;
-    void init(int n);
-    int find(int x);
-    void unite(int x, int y);
-    void info();
-    bool same(int x, int y) { return find(x) == find(y); }
-};
-
-void DisjointSet::init(int n) {
-    rank = vector<int>(n, 0);
-    par.resize(len = n);
-    for (int i = 0; i < n; ++i) { par[i] = i; }
-}
-
-int DisjointSet::find(int x) {
-    return (par[x] == x ? x : par[x] = find(par[x]));
-}
-
-void DisjointSet::unite(int x, int y) {
-    int px = find(x);
-    int py = find(y);
-    if (px == py) return;
-
-    if (rank[px] < rank[py]) {
-        par[px] = py;
-    } else {
-        par[py] = px;
+    void init(int n) {
+        rank = vector<int>(n, 0);
+        par.resize(len = n);
+        for (int i = 0; i < n; ++i) { par[i] = i; }
     }
 
-    if (rank[px] == rank[py]) ++rank[px];
-}
+    int find(int x) { return (par[x] == x ? x : par[x] = find(par[x])); }
 
-void DisjointSet::info() {
-    vector<vector<int>> grp(len);
-    vector<int> isVisited(len, 0);
-    for (int i = 0; i < len; ++i)
-        if (!isVisited[i]) { grp[find(i)].push_back(i); }
+    void unite(int x, int y) {
+        int px = find(x);
+        int py = find(y);
+        if (px == py) return;
+        if (rank[px] < rank[py]) {
+            par[px] = py;
+        } else {
+            par[py] = px;
+        }
+        if (rank[px] == rank[py]) ++rank[px];
+    }
 
-    for (auto it = grp.begin(); it != grp.end(); ++it) {
-        if (!it->empty()) {
-            printf("[%d]  ", it - grp.begin());
-            for (auto&& i : *it) { cout << i << " "; }
-            cout << "\n";
+    bool same(int x, int y) { return find(x) == find(y); }
+
+    void info() {
+        vector<vector<int>> grp(len);
+        vector<int> isVisited(len, 0);
+        for (int i = 0; i < len; ++i)
+            if (!isVisited[i]) { grp[find(i)].push_back(i); }
+
+        for (auto it = grp.begin(); it != grp.end(); ++it) {
+            if (!it->empty()) {
+                printf("[%d]  ", it - grp.begin());
+                for (auto&& i : *it) { cout << i << " "; }
+                cout << "\n";
+            }
         }
     }
-}
+};
 
 int main() {
-    ifstream ifs("draft.txt");
+    ifstream ifs("D:\\Programming\\draft.txt");
     int n, k;
     ifs >> n >> k;
     vector<int> T(n);
