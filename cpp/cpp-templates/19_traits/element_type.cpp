@@ -2,6 +2,7 @@
 #include <list>
 #include <iostream>
 
+// 19.3.1 Element Types (p.401)
 
 template <typename Container>
 struct ElementT {
