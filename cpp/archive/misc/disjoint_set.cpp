@@ -14,7 +14,9 @@ struct DisjointSet {
     void init(int n) {
         rank = vector<int>(n, 0);
         par.resize(len = n);
-        for (int i = 0; i < n; ++i) { par[i] = i; }
+        for (int i = 0; i < n; ++i) {
+            par[i] = i;
+        }
     }
 
     int find(int x) { return (par[x] == x ? x : par[x] = find(par[x])); }
@@ -37,12 +39,16 @@ struct DisjointSet {
         vector<vector<int>> grp(len);
         vector<int> isVisited(len, 0);
         for (int i = 0; i < len; ++i)
-            if (!isVisited[i]) { grp[find(i)].push_back(i); }
+            if (!isVisited[i]) {
+                grp[find(i)].push_back(i);
+            }
 
         for (auto it = grp.begin(); it != grp.end(); ++it) {
             if (!it->empty()) {
                 printf("[%d]  ", it - grp.begin());
-                for (auto&& i : *it) { cout << i << " "; }
+                for (auto &&i : *it) {
+                    cout << i << " ";
+                }
                 cout << "\n";
             }
         }
@@ -56,7 +62,9 @@ int main() {
     vector<int> T(n);
     vector<int> X(n);
     vector<int> Y(n);
-    for (int i = 0; i < k; ++i) { ifs >> T[i] >> X[i] >> Y[i]; }
+    for (int i = 0; i < k; ++i) {
+        ifs >> T[i] >> X[i] >> Y[i];
+    }
 
     DisjointSet s;
     s.init(3 * n);
