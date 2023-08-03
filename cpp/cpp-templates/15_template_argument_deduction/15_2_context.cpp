@@ -35,6 +35,28 @@ class X {
 template <int N>
 void fppm(void (X<N>::*p)(typename X<N>::I));
 
+template <typename T>
+struct A {};
+
+template <>
+struct A<int> {
+    using Type = double;
+};
+
+template <>
+struct A<char> {
+    using Type = double;
+};
+
+template <typename T>
+void ndc(typename A<T>::Type x);
+
 int main() {
     fppm(&X<33>::f);  // N = 33
+
+    // ndc(3.14);
+    
+    // ERROR: 'A<T>::Type' is non-deduced context
+    // Cannot deduce 'T' from member of 'A<T>'. They have no relationship
+    // (because we can have specialization)
 }
