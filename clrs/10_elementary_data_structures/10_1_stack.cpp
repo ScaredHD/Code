@@ -2,7 +2,6 @@
 #include <initializer_list>
 #include <iostream>
 
-
 template <typename T, size_t N = 1000>
 class Stack {
   public:
@@ -28,7 +27,7 @@ class Stack {
     const T* data() const { return arr; }
 
   private:
-    size_t stackSize {};
+    size_t stackSize{};
     T arr[N];
 };
 

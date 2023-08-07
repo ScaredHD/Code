@@ -5,4 +5,3 @@ ColumnLimit:     100
 IndentWidth:     4
 AllowShortFunctionsOnASingleLine: InlineOnly
 SortIncludes: CaseInsensitive
-SpaceBeforeCpp11BracedList: true
