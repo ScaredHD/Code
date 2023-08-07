@@ -1,7 +1,7 @@
-#include <iostream>
 #include <cstddef>
 #include <initializer_list>
 #include <iostream>
+
 
 template <typename T, size_t N = 1000>
 class Stack {
@@ -28,7 +28,7 @@ class Stack {
     const T* data() const { return arr; }
 
   private:
-    size_t stackSize{};
+    size_t stackSize {};
     T arr[N];
 };
 
@@ -56,7 +56,7 @@ int main() {
 
     s.pop();
     std::cout << "s: " << s << "\n";
-    
+
     s.pop();
     std::cout << "s: " << s << "\n";
 
@@ -64,6 +64,4 @@ int main() {
     std::cout << "s: " << s << "\n";
 
     std::cout << "s is empty: " << std::boolalpha << s.empty() << "\n";
-
-
 }
