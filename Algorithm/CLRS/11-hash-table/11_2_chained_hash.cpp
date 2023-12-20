@@ -21,18 +21,23 @@ template <typename T>
 void listInsert(Node<T>* p, Node<T>* x) {
     x->next = p->next;
     x->prev = p;
-    if (p->next) x->next->prev = x;
+    if (p->next) {
+        x->next->prev = x;
+    }
     p->next = x;
 }
 
 template <typename T>
 void listDelete(Node<T>* head, Node<T>* x) {
-    if (x->prev)
+    if (x->prev) {
         x->prev->next = x->next;
-    else
+    } else {
         head = x->next;
+    }
 
-    if (x->next) x->next->prev = x->prev;
+    if (x->next) {
+        x->next->prev = x->prev;
+    }
 }
 
 template <typename Key, typename Value, size_t N = 1000>

@@ -1,0 +1,20 @@
+CompileFlags:
+  Add: [
+    --target=x86_64-w64-mingw, '-Wall'
+]
+
+Index:
+  StandardLibrary: No
+
+Diagnostics:
+  ClangTidy:
+    Add: [
+      bugprone*,
+      performance*,
+      readability*,
+    ]
+    Remove: [
+      bugprone-easily-swappable-parameters,
+      readability-identifier-length,
+      readability-magic-numbers
+    ]
