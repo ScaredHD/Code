@@ -9,12 +9,7 @@ Index:
 Diagnostics:
   ClangTidy:
     Add: [
-      bugprone*,
       performance*,
-      readability*,
     ]
     Remove: [
-      bugprone-easily-swappable-parameters,
-      readability-identifier-length,
-      readability-magic-numbers
     ]
