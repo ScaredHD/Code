@@ -10,6 +10,7 @@ struct TreeNode {
     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
 };
 
+// 2024-1-8
 class Solution {
   public:
     bool flipEquiv(TreeNode *root1, TreeNode *root2) {
@@ -31,6 +32,7 @@ class Solution {
 
         if (flipEquiv(root1->left, root2->right) && flipEquiv(root1->right, root2->left)) {
             return true;
+        
         }
 
         return false;
