@@ -9,6 +9,8 @@ class Solution {
     int maximizeSquareHoleArea(int n, int m, std::vector<int>& hBars, std::vector<int>& vBars) {
         std::sort(hBars.begin(), hBars.end());
         std::sort(vBars.begin(), vBars.end());
+        hBars.push_back(-1);
+        vBars.push_back(-1);
 
         int start = 0;
         int hmax  = 0;
@@ -18,7 +20,6 @@ class Solution {
                 start = i;
             }
         }
-        hmax = std::max(hmax, (int)hBars.size() - start);
 
         start    = 0;
         int vmax = 0;
@@ -28,7 +29,6 @@ class Solution {
                 start = i;
             }
         }
-        vmax = std::max(vmax, (int)vBars.size() - start);
 
         int l = std::min(hmax, vmax) + 1;
         return l * l;
