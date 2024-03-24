@@ -1,3 +1,4 @@
 .vscode/
 bin/
 lua/test.lua
+SICP/test.rkt
