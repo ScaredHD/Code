@@ -7,4 +7,8 @@
 
 (test 0 (p))
 
-; infinite loop
+; Applicative order: infinite loop
+; Evaluate all arguments and then apply
+
+; Normal order: 0
+; Expand fully and then reduce 
