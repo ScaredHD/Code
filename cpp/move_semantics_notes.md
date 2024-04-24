@@ -12,8 +12,7 @@ void f(T&& arg) {}
 For universal reference `T&&`, when the expression of type `A` passed to `f` is:
 
 * lvalue: `T` is `A&`
-* xvalue: `T` is `A&&`
-* prvalue: `T` is `A`
+* prvalue or xvalue: `T` is `A`
 
 ### 2. Reference collapsing rule
 
@@ -50,5 +49,5 @@ static_cast<T&&>(t)
 Difference is that in `std::move` we have `remove_reference`, making cast-to type strictly an rvalue reference, whereas `std::forward` appends `&&` to `T`, resulting an rvalue refernce only when `T` is an rvalue refernce. Therefore `std::forward<T>(arg)` is a "conditional move":
 
 * when passed argument is an lvalue: `T` is `A&`, and `std::forward<T>(arg)` is `A&`, same as `arg`
-* when passed argument is an xvalue: `T` is `A&&`, and `std::forward<T>(arg)` is `A&&`, same as `std::move(arg)`
+* when passed argument is an xvalue: `T` is `A`, and `std::forward<T>(arg)` is `A&&`, same as `std::move(arg)`
 * when passed argument is an prvalue: `T` is `A`, and `std::forward<T>(arg)` is `A&&`, same as `std::move(arg)`
