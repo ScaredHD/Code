@@ -1,5 +1,10 @@
 *
 
-!Algorithm/
-!Leetcode/
-!SICP/
+!/Algorithm
+!/Algorithm/**
+
+!/Leetcode
+!/Leetcode/**
+
+!/SICP
+!/SICP/**
