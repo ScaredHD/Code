@@ -1,3 +1,6 @@
+// 2024-06-22
+// [简单] LCP 61. 气温变化趋势
+
 #include <algorithm>
 #include <vector>
 
