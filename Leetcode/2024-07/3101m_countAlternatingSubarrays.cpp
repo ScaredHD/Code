@@ -15,11 +15,9 @@ class Solution {
         // then dp[1] = 2, since nums[1, 1] and nums[0, 1] are AS.
         // dp[2] = 1, only nums[2, 2] is AS.
 
-        vector<int> dp(nums.size(), 0);
-        dp[0] = 1;
+        vector<int> dp(nums.size(), 1);
 
         for (int i = 1; i < nums.size(); ++i) {
-            dp[i] = 1;
             if (nums[i] != nums[i - 1]) {
                 dp[i] += dp[i - 1];
             }
