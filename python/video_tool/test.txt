@@ -8,6 +8,6 @@ i 1:20:00 o 1:22:04 file name with spaces.mp4
 [video2.mkv]
 res 1280x720
 enc h.264
-0 -> 10 clip4.mp4
-in 0:20 time 30s
+0. -> 10.5 clip4.mp4
+in 0:20 time 30.4 s
 i 1:0 t 2

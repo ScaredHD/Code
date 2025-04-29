@@ -7,12 +7,6 @@ class CharStream:
         self.content = self.f.read()
         self.len = len(self.content)
 
-    def advance(self):
-        self.pos += 1
-
-    def peek(self):
-        return self.content[self.pos]
-
     def substring(self, start, end):
         return self.content[start:end]
 
@@ -21,7 +15,8 @@ class State:
     def __init__(self, id, is_final=False):
         self.id: str | int = id
         self.is_final = is_final
-        self.token_type = None
+        # Matched token type when state is final
+        self.token_type = None 
 
 
 StateID = str | int
@@ -38,7 +33,7 @@ charset_quoted_string_content = charset_printable - \
 charset_ns = charset_printable - charset_ws
 charset_digits = set(string.digits)
 charset_letters = set(string.ascii_letters)
-charset_simple_string = charset_letters | charset_digits | {'_'}
+charset_simple_string = charset_letters | charset_digits | {'_', '.', '-'}
 
 
 def is_epsilon(input: str):
@@ -214,15 +209,15 @@ class TokenNumber:
 
 def nfa_number():
     nfa = NFA()
-    nfa.create_states({'num0', 'num1', 'num2', 'num3'})
-    nfa.set_finals({'num1', 'num3'}, TokenNumber)
+    nfa.create_states({'num0', 'num1', 'num2'})
+    nfa.set_finals({'num1', 'num2'}, TokenNumber)
     nfa.set_start('num0')
     nfa.add_transitions([
         ('num0', charset_digits, 'num1'),
         ('num1', charset_digits, 'num1'),
         ('num1', '.', 'num2'),
-        ('num2', charset_digits, 'num3'),
-        ('num3', charset_digits, 'num3')
+        ('num2', charset_digits, 'num2'),
+        # ('num3', charset_digits, 'num3')
     ])
     return nfa
 
@@ -230,6 +225,7 @@ def nfa_number():
 class TokenSimpleString:
     def __init__(self, token: str):
         self.raw_str = token
+
 
 def nfa_simple_string():
     nfa = NFA()
@@ -241,6 +237,7 @@ def nfa_simple_string():
         ('str1', charset_simple_string, 'str1')
     ])
     return nfa
+
 
 class TokenQuotedString:
     def __init__(self, token: str):
@@ -258,6 +255,31 @@ def nfa_quoted_string():
         ('qstr1', charset_quoted_string_content, 'qstr1'),
         ('qstr1', '"', 'qstr2')
     ])
+    return nfa
+
+
+class TokenKeyword:
+    def __init__(self, token: str):
+        self.raw_str = token
+
+
+all_keywords = {'in', 'i', 'out', 'o', 'time', 'h', 'min', 's', 'res', 'enc'}
+
+
+def nfa_keyword(keyword_str):
+    nfa = NFA()
+
+    def state_id_str(i):
+        return 'kw_' + keyword_str + str(i)
+    l = len(keyword_str)
+
+    nfa.create_states(
+        {state_id_str(i) for i in range(l + 1)})
+    nfa.set_finals({state_id_str(l)}, TokenKeyword)
+    nfa.set_start(state_id_str(0))
+    for i, input in enumerate(keyword_str):
+        nfa.add_transition(state_id_str(i), input, state_id_str(i + 1))
+
     return nfa
 
 
@@ -291,20 +313,37 @@ class TokenCloseBracket():
     def __init__(self, token: str):
         self.raw_str = token
 
+
 class TokenArrow():
-    pass
+    def __init__(self, token: str):
+        self.raw_str = token
+
+class TokenDot():
+    def __init__(self, token: str):
+        self.raw_str = token
 
 def nfa_special_symbols():
     nfa = NFA()
     nfa.create_states({'symbol_start', 'colon',
-                      'lbracket', 'rbracket'})
+                      'lbracket', 'rbracket', 'arrow0', 'arrow1', 'dot'})
+
     nfa.set_finals({'colon'}, TokenColon)
     nfa.set_finals({'lbracket'}, TokenOpenBracket)
     nfa.set_finals({'rbracket'}, TokenCloseBracket)
+    nfa.set_finals({'arrow1'}, TokenArrow)
+    nfa.set_finals({'dot'}, TokenDot)
+
     nfa.set_start('symbol_start')
+
     nfa.add_transition('symbol_start', ':', 'colon')
     nfa.add_transition('symbol_start', '[', 'lbracket')
     nfa.add_transition('symbol_start', ']', 'rbracket')
+
+    nfa.add_transition('symbol_start', '-', 'arrow0')
+    nfa.add_transition('arrow0', '>', 'arrow1')
+
+    nfa.add_transition('symbol_start', '.', 'dot')
+
     return nfa
 
 
@@ -367,13 +406,16 @@ class Tokenizer:
             self.do_tokenize()
 
     def do_tokenize(self):
-        tokenizer_nfa = create_tokenizer_nfa([
+        all_token_nfa = [
             nfa_number(),
             nfa_quoted_string(),
             nfa_simple_string(),
             nfa_whitespace(),
             nfa_special_symbols()
-        ])
+        ]
+        all_token_nfa.extend([nfa_keyword(kw) for kw in all_keywords])
+
+        tokenizer_nfa = create_tokenizer_nfa(all_token_nfa)
         tokenizer_nfa.validate()
 
         simulation = NFASimulation(tokenizer_nfa)
@@ -390,13 +432,29 @@ class Tokenizer:
             if self.reached_eof or simulation.has_terminated():
                 origin_forward = self.forward
                 has_accepted = False
+
                 while self.forward > self.lexeme_begin:
                     states = simulation.state_group_track[-1]
                     accept_states = states & final_states
                     if accept_states != set():
-                        accept_state_id = list(accept_states)[0]
-                        accept_state = simulation.nfa.states[accept_state_id]
-                        token_type = accept_state.token_type
+
+                        keyword_accept_states = {
+                            s for s in accept_states if simulation.nfa.states[s].token_type is TokenKeyword}
+                        rest_accept_states = accept_states - keyword_accept_states
+
+                        assert len(
+                            keyword_accept_states) < 2, 'Matching keyword more than one'
+
+                        # Keywords have higher priority
+                        token_type = None
+                        if len(keyword_accept_states) == 1:
+                            token_type = TokenKeyword
+                        else:
+                            assert len(rest_accept_states) > 0
+                            accept_state_id = list(rest_accept_states)[0]
+                            accept_state = simulation.nfa.states[accept_state_id]
+                            token_type = accept_state.token_type
+
                         self.accept(token_type)
                         simulation.reset()
                         has_accepted = True
