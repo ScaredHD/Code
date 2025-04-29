@@ -1,13 +1,13 @@
 [video1.mkv]
-res 1080p  // output resolution
-enc hevc_nvenc  // encoding
-3:20 -> 4:15 clip1.mp4  // from -> to name
-in 6:25 out 6:30 clip2.mp4  // same
+res 1080p
+enc hevc_nvenc
+3:20 -> 4:15 clip1.mp4
+in 6:25 out 6:30 clip2.mp4
 i 1:20:00 o 1:22:04 file name with spaces.mp4
 
 [video2.mkv]
 res 1280x720
 enc h.264
-0 -> 10 clip4.mp4  // 0:0 -> 0:10
-in 0:20 time 30s  // in <start> time <duration>
+0 -> 10 clip4.mp4
+in 0:20 time 30s
 i 1:0 t 2
