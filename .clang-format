@@ -23,6 +23,7 @@ BreakAfterAttributes: Leave
 ColumnLimit: 100
 ContinuationIndentWidth: 2
 Cpp11BracedListStyle: true
+DerivePointerAlignment: false
 FixNamespaceComments: true
 IndentPPDirectives: BeforeHash
 IndentWidth: 2
@@ -30,11 +31,11 @@ InsertBraces: false
 MaxEmptyLinesToKeep: 2
 PackConstructorInitializers: CurrentLine
 PenaltyBreakAssignment: 100
+PointerAlignment: Left
 SeparateDefinitionBlocks: Leave
 SpaceAfterTemplateKeyword: false
 SpaceBeforeCpp11BracedList: false
 TabWidth: 4
-UseTab: Never
 
 # Empty lines
 KeepEmptyLines:
