@@ -36,7 +36,7 @@
                     "ignoreFailures": true
                 }
             ],
-            "preLaunchTask": "g++ build"
+            "preLaunchTask": "c++ build"
         }
 
 
