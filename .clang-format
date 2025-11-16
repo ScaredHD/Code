@@ -5,7 +5,7 @@ BasedOnStyle: Google
 BreakBeforeBraces: Linux
 
 AccessModifierOffset: -2
-AlignAfterOpenBracket: BlockIndent
+AlignAfterOpenBracket: Align
 AlignConsecutiveAssignments: None
 AlignConsecutiveDeclarations: None
 AlignEscapedNewlines: LeftWithLastLine
